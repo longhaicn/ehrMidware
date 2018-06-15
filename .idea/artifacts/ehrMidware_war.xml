@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="ehrMidware:war">
+    <output-path>$PROJECT_DIR$/target</output-path>
+    <root id="archive" name="ehrMidware.war">
+      <element id="artifact" artifact-name="ehrMidware:war exploded" />
+    </root>
+  </artifact>
+</component>
