@@ -13,10 +13,6 @@ public class OrganizationEntity implements Serializable{
     /**数据库流水*/
 //    private int id;
     /**
-     * 数据唯一标识ID
-     */
-    private String uniqueId;
-    /**
      * 机构类型：单位:UN  部门:UM   岗位:@K
      */
     private String organizationSetid;
@@ -24,6 +20,10 @@ public class OrganizationEntity implements Serializable{
      * 组织机构的ID
      */
     private String organizationUuid;
+    /**
+     * 组织机构的Key
+     */
+    private String organizationKey;
     /**
      * 组织机构名称
      */
@@ -33,9 +33,17 @@ public class OrganizationEntity implements Serializable{
      */
     private String parentUuid;
     /**
+     * 所属父级组织机构的Key
+     */
+    private String parentKey;
+    /**
      * OU的所有直属子级
      */
     private String childrenOuUuid;
+    /**
+     * OU的所有直属子级
+     */
+    private String childrenKey;
     /**
      * 和OA关联的Code
      */

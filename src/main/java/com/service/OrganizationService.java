@@ -28,14 +28,16 @@ public class OrganizationService {
     @Autowired
     private OrganizaitonDao organizaitonDao;
 
-    private  List<OrganizationEntity> lists = new ArrayList<>();
-    int i=0;
-
+    /**
+     *
+     * @param listParent
+     * @return
+     */
     public List<OrganizationEntity> buildTree(List<OrganizationEntity> listParent){
         List<OrganizationEntity> listChild= new ArrayList<>();
         String parent;
         for (OrganizationEntity entity : listParent) {
-            parent = entity.getOrganizationUuid();
+            parent = entity.getOrganizationKey();
                 List<OrganizationEntity> childs = organizaitonDao.queryChild(parent);
                 if (null != childs && childs.size()>0){
                     for (OrganizationEntity child:childs) {
@@ -46,15 +48,14 @@ public class OrganizationService {
         return listChild;
     }
 
-
-
+    /**
+     * 全量同步组织架构
+     * @return
+     */
     public int syncAllOrganization(){
-
-
         List<OrganizationEntity> list = new ArrayList<>();
         //1.查询EHR数据库数据
         try{
-//            list =organizaitonDao.selectOrganizationList();
             List<OrganizationEntity> childs =  organizaitonDao.queryParent("保臻科技公司");
             while (null != childs && childs.size()>0){
                 for (OrganizationEntity o: childs) {
@@ -70,7 +71,6 @@ public class OrganizationService {
         try{
             String url = BaseUrl.HOST+ API.testConn;
             String res = HttpUtils.doGet(url);
-
             JSONObject j = JSON.parseObject(res);
             if(j.getInteger("code") == 0){
                 return 0;
@@ -86,7 +86,6 @@ public class OrganizationService {
             e.printStackTrace();
             return 0;
         }
-
         //3.同步数据
         try{
             JSONObject json = new JSONObject();
@@ -111,8 +110,11 @@ public class OrganizationService {
         return 0;
     }
 
+    /**
+     * 增量同步组织架构
+     * @return
+     */
     public int syncInfluencedOrganization() {
-
         List<OrganizationEntity> list,listK=null;
         String influnencedDate=null;
         //1.连接主数据平台 获取上次同步时间 influnenced Date
@@ -120,19 +122,11 @@ public class OrganizationService {
             String url = BaseUrl.HOST+ API.influnencedDate;
             String res = HttpUtils.doGet(url);
             JSONObject j = JSON.parseObject(res);
-            if(j.getInteger("code") == 0){
+            if(j.getInteger("code") == 0)
                 return 0;
-            }else {
+            else
                 influnencedDate=j.getString("data");
-            }
-//            else {
-//                url = BaseUrl.HOST+ API.archiveAllOrganization;
-//                res = HttpUtils.doGet(url);
-//                j = JSON.parseObject(res);
-//                if(j.getInteger("code") == 0){
-//                    return 0;
-//                }
-//            }
+
         }catch (Exception e){
             e.printStackTrace();
             return 0;
@@ -151,10 +145,6 @@ public class OrganizationService {
         //3.同步数据
         try{
             JSONObject json = new JSONObject();
-
-
-
-
             json.put("list",list);
             json.put("listK",listK);
             String url = BaseUrl.HOST+ API.organizationInfluencedSave;
@@ -168,12 +158,6 @@ public class OrganizationService {
             return 0;
         }
         return 0;
-
-
-
-
-
-
 
     }
 }

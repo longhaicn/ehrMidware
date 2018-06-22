@@ -80,7 +80,7 @@ public class StuffService {
 
     public int syncInfluencedStuff() {
 
-        List<StuffEntity> list,listK=null;
+        List<StuffEntity> list=null;
         String influnencedDate=null;
         //1.连接主数据平台 获取上次同步时间 influnenced Date
         try{
@@ -93,14 +93,6 @@ public class StuffService {
             }else {
                 influnencedDate=j.getString("data");
             }
-//            else {
-//                url = BaseUrl.HOST+ API.archiveAllOrganization;
-//                res = HttpUtils.doGet(url);
-//                j = JSON.parseObject(res);
-//                if(j.getInteger("code") == 0){
-//                    return 0;
-//                }
-//            }
         }catch (Exception e){
             e.printStackTrace();
             return 0;
@@ -119,7 +111,6 @@ public class StuffService {
         try{
             JSONObject json = new JSONObject();
             json.put("list",list);
-            json.put("listK",listK);
             String url = BaseUrl.HOST+ API.stuffInfluencedSave;
             String res = HttpUtils.doPost(url,json,"utf-8");
             JSONObject j = JSON.parseObject(res);

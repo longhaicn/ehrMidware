@@ -20,10 +20,6 @@ public class StuffEntity implements Serializable {
      */
 //    private int id;
     /**
-     * 数据唯一标识ID
-     */
-    private String uniqueId;
-    /**
      * 平台主账户 工号 E0127
      */
     private String userName;
@@ -61,6 +57,10 @@ public class StuffEntity implements Serializable {
      */
     private String jobId;
     /**
+     * 岗位Key unique_id
+     */
+    private String jobKey;
+    /**
      * 岗位名称 codeitemdesc
      */
     private String jobName;
@@ -76,6 +76,10 @@ public class StuffEntity implements Serializable {
      * 所属组织机构的uuid
      */
     private String organizationUuid;
+    /**
+     * 所属组织机构的uuid
+     */
+    private String organizationKey;
     /**
      * 组织机构名称 E0122（部门）
      */

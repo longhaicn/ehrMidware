@@ -36,7 +36,8 @@ public class OrganizationController {
 
     @RequestMapping(value = "/syncInfluencedOrganization")
     public void syncInfluencedOrganization(HttpServletRequest request, HttpServletResponse response) {
-       int a= organizationService.syncInfluencedOrganization();
+
+       int a = organizationService.syncInfluencedOrganization();
     }
 
     @Scheduled(cron = "0 * 5 * * ?")
@@ -46,12 +47,4 @@ public class OrganizationController {
         calendar.add(Calendar.DAY_OF_MONTH, -1);
         syncInfluencedOrganization(null,null);
     }
-
-    @Scheduled(cron = "0 0 0 15 * ?")
-    public void taskmonth(){
-        System.out.println("###############################每月十五号全量同步组织架构###############################");
-        syncAllOrganization(null,null);
-    }
-
-
 }
