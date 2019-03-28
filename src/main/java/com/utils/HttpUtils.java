@@ -47,6 +47,7 @@ public class HttpUtils {
                         throws java.security.cert.CertificateException {
                     // TODO Auto-generated method stub
                 }
+
                 public void checkServerTrusted(
                         java.security.cert.X509Certificate[] chain,
                         String authType)
@@ -71,9 +72,9 @@ public class HttpUtils {
         HttpPost httpPost = null;
         String result = null;
         try {
-            if(url.startsWith("https")){
+            if (url.startsWith("https")) {
                 httpClient = wrapClient(new DefaultHttpClient());
-            }else{
+            } else {
                 httpClient = new DefaultHttpClient();
             }
             httpPost = new HttpPost(url);
@@ -100,9 +101,9 @@ public class HttpUtils {
         HttpPost httpPost = null;
         String result = null;
         try {
-            if(url.startsWith("https")){
+            if (url.startsWith("https")) {
                 httpClient = wrapClient(new DefaultHttpClient());
-            }else{
+            } else {
                 httpClient = new DefaultHttpClient();
             }
             httpPost = new HttpPost(url);
@@ -124,9 +125,9 @@ public class HttpUtils {
         String result = null;
         HttpGet request = new HttpGet(url);
 
-        if(url.startsWith("https")){
+        if (url.startsWith("https")) {
             httpClient = wrapClient(new DefaultHttpClient());
-        }else{
+        } else {
             httpClient = new DefaultHttpClient();
         }
         try {

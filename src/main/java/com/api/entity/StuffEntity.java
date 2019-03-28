@@ -53,9 +53,9 @@ public class StuffEntity implements Serializable {
      */
     private String idCard;
     /**
-     * 岗位ID E01A1
+     * 是否转正 A32 C3210字段
      */
-    private String jobId;
+    private String status;
     /**
      * 岗位Key unique_id
      */
@@ -68,22 +68,19 @@ public class StuffEntity implements Serializable {
      * 职位级别 H01SX
      */
     private String jobGrade;
+
     /**
-     * 是否转正 A32 C3210字段
-     */
-    private String status;
-    /**
-     * 所属组织机构的uuid
-     */
-    private String organizationUuid;
-    /**
-     * 所属组织机构的uuid
+     * 所属组织机构的key
      */
     private String organizationKey;
     /**
      * 组织机构名称 E0122（部门）
      */
     private String organizationName;
+    /**
+     * 臻家收费的角色
+     */
+    private int role=0;
     /**
      * 创建时间
      */

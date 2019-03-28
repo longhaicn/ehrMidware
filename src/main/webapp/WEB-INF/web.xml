@@ -36,7 +36,7 @@
   </listener>
   <!-- spring mvc servlet-->
   <servlet>
-    <servlet-name>SpringMVC</servlet-name>
+    <servlet-name>ehrMidware</servlet-name>
     <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
     <init-param>
       <param-name>contextConfigLocation</param-name>
@@ -46,16 +46,14 @@
     <async-supported>true</async-supported>
   </servlet>
   <servlet-mapping>
-    <servlet-name>SpringMVC</servlet-name>
-    <!-- 此处也可以配置成 *.do 形式 -->
+    <servlet-name>ehrMidware</servlet-name>
     <url-pattern>/</url-pattern>
   </servlet-mapping>
   <welcome-file-list>
-    <welcome-file>/index.jsp</welcome-file>
+    <welcome-file>\index.jsp</welcome-file>
   </welcome-file-list>
   <!-- session配置 -->
   <session-config>
     <session-timeout>15</session-timeout>
   </session-config>
-
 </web-app>

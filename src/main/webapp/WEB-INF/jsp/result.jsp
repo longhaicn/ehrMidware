@@ -7,9 +7,9 @@
 <body>
 EHR数据查重页面<br>
 <form action="/ehrMidware/checkValues" method="POST">
-    姓名全拼：<input type="text" name="pinyinName" ><br>
-    手机号码：<input type="text" name="phoneNumber"><br>
-    阿里邮箱：<input type="text" name="email"><br>
+    姓名全拼：<input type="text" value="${pinyinName}" name="pinyinName" >${pinyinNameFlag}<br>
+    手机号码：<input type="text" value="${phoneNumber}" name="phoneNumber">${phoneNumberFlag}<br>
+    阿里邮箱：<input type="text" value="${email}" name="email">${emailFlag}<br>
     <input type="submit">
 </form>
 <br><br><br><br><br><hr>

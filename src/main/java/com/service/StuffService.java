@@ -7,71 +7,59 @@ import com.api.BaseUrl;
 import com.api.entity.StuffEntity;
 import com.dao.StuffDao;
 import com.utils.HttpUtils;
+import com.utils.LOG;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.HashMap;
 import java.util.List;
 
-/**
- * @ProjectName: ehrMidware
- * @Package: com.service
- * @Author: longhai
- * @CreateDate: 2018/5/21 15:45
- * @Version: 1.0
- * <p>Copyright: Copyright (c) 2018</p>
- */
 @Service("stuffService")
 public class StuffService {
-
     @Autowired
     StuffDao stuffDao;
 
     public int syncAllStuff() {
-        List<StuffEntity> list=null;
-        //1.查询EHR数据库数据
-        try{
-            list =stuffDao.selectStuffList();
-        }catch (Exception e){
+        List<StuffEntity> list = null;
+        try {
+            list = this.stuffDao.selectStuffList();
+        } catch (Exception e) {
             e.printStackTrace();
             return 0;
         }
-        //2.测试连接主数据平台 清理数据库做全量同步
-        try{
-            String url = BaseUrl.HOST+ API.testConn;
+        try {
+            String url = BaseUrl.HOST + API.testConn;
             String res = HttpUtils.doGet(url);
             JSONObject j = JSON.parseObject(res);
-            if(j.getInteger("code") == 0){
+            if (j.getInteger("code").intValue() == 0) {
                 return 0;
-            }else {
-                url = BaseUrl.HOST+ API.archiveAllStuff;
-                res = HttpUtils.doGet(url);
-                j = JSON.parseObject(res);
-                if(j.getInteger("code") == 0){
-                    return 0;
-                }
             }
-        }catch (Exception e){
+            url = BaseUrl.HOST + API.archiveAllStuff;
+            res = HttpUtils.doGet(url);
+            j = JSON.parseObject(res);
+            if (j.getInteger("code").intValue() == 0) {
+                return 0;
+            }
+        } catch (Exception e) {
             e.printStackTrace();
             return 0;
         }
-
-        //3.同步数据
-        try{
+        try {
             JSONObject json = new JSONObject();
-            json.put("list",list);
-            String url = BaseUrl.HOST+ API.stuffInterestSave;
-            String res = HttpUtils.doPost(url,json,"utf-8");
+            json.put("list", list);
+            String url = BaseUrl.HOST + API.stuffInterestSave;
+            String res = HttpUtils.doPost(url, json, "utf-8");
             JSONObject j = JSON.parseObject(res);
-            if(j.getInteger("code") == 0){
+            if (j.getInteger("code").intValue() == 0) {
                 return 0;
-            }else {
-                url = BaseUrl.HOST+ API.stuffReset;
-                res = HttpUtils.doGet(url);
-                j = JSON.parseObject(res);
-                if(j.getInteger("code") == 0){
-                    return 0;
-                }
             }
-        }catch (Exception e){
+            url = BaseUrl.HOST + API.stuffReset;
+            res = HttpUtils.doGet(url);
+            j = JSON.parseObject(res);
+            if (j.getInteger("code").intValue() == 0) {
+                return 0;
+            }
+        } catch (Exception e) {
             e.printStackTrace();
             return 0;
         }
@@ -79,53 +67,60 @@ public class StuffService {
     }
 
     public int syncInfluencedStuff() {
-
-        List<StuffEntity> list=null;
-        String influnencedDate=null;
-        //1.连接主数据平台 获取上次同步时间 influnenced Date
-        try{
-            String url = BaseUrl.HOST+ API.influnencedDate;
+        List<StuffEntity> list = null;
+        String influnencedDate = null;
+        try {
+            String url = BaseUrl.HOST + API.influnencedStfDate;
             String res = HttpUtils.doGet(url);
-
             JSONObject j = JSON.parseObject(res);
-            if(j.getInteger("code") == 0){
+            if (j.getInteger("code").intValue() == 0) {
                 return 0;
-            }else {
-                influnencedDate=j.getString("data");
             }
-        }catch (Exception e){
+            influnencedDate = j.getString("data");
+        } catch (Exception e) {
             e.printStackTrace();
             return 0;
         }
-
-        //2.查询EHR数据库数据 增量数据 增删改 时间戳 > influnencedDate
-        try{
-            System.out.println("influnencedDate="+influnencedDate);
-            list =stuffDao.selectInfluencedStuffList(influnencedDate);
-        }catch (Exception e){
+        try {
+            LOG.print("influnencedDate=" + influnencedDate);
+            list = this.stuffDao.selectInfluencedStuffList(influnencedDate);
+            LOG.print("syncInfluencedStuff size:" + list.size());
+            if (0 == list.size()) {
+                LOG.print("syncInfluencedStuff abort!");
+                return 0;
+            }
+        } catch (Exception e) {
             e.printStackTrace();
             return 0;
         }
-
-        //3.同步数据
-        try{
+        try {
             JSONObject json = new JSONObject();
-            json.put("list",list);
-            String url = BaseUrl.HOST+ API.stuffInfluencedSave;
-            String res = HttpUtils.doPost(url,json,"utf-8");
+            json.put("list", list);
+            String url = BaseUrl.HOST + API.stuffInfluencedSave;
+            String res = HttpUtils.doPost(url, json, "utf-8");
             JSONObject j = JSON.parseObject(res);
-            if(j.getInteger("code") == 0){
+            if (j.getInteger("code").intValue() == 0) {
                 return 0;
             }
-        }catch (Exception e){
+            LOG.print("syncInfluencedStuff done!");
+        } catch (Exception e) {
             e.printStackTrace();
             return 0;
         }
         return 0;
+    }
 
+    public HashMap<String, String> checkValues(String email, String pinyinName, String phoneNumber) {
+        HashMap<String, String> map = new HashMap();
 
+        String emailFlag = HttpUtils.doPost(BaseUrl.OA_HOST + API.email + email, "utf-8");
+        String phoneNumberFlag = HttpUtils.doPost(BaseUrl.OA_HOST + API.phoneNumber + phoneNumber, "utf-8");
+        String pinyinNameFlag = HttpUtils.doPost(BaseUrl.OA_HOST + API.pinyinName + pinyinName, "utf-8");
 
+        map.put("emailFlag", emailFlag);
+        map.put("phoneNumberFlag", phoneNumberFlag);
+        map.put("pinyinNameFlag", pinyinNameFlag);
 
-
+        return map;
     }
 }

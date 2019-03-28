@@ -9,7 +9,7 @@ import java.util.Date;
  * 组织架构实体
  */
 @Data
-public class OrganizationEntity implements Serializable{
+public class OrganizationEntity implements Serializable {
     /**数据库流水*/
 //    private int id;
     /**
